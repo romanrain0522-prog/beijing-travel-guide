@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北京景点游览攻略 · 新中式水墨</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Long+Cang&family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@300;400;500;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+/* ====== CSS Reset & Variables ====== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink-black: #1a1a2e;
+  --ink-deep: #0f0f1a;
+  --ink-text: #2c2c3e;
+  --paper: #f5f0e1;
+  --paper-warm: #f0e8d8;
+  --paper-dark: #e8dec9;
+  --paper-card: #ede5d0;
+  --vermillion: #c1272d;
+  --vermillion-deep: #9e1b20;
+  --vermillion-light: #d63136;
+  --jade: #5a7d5a;
+  --jade-deep: #3d5c3d;
+  --gold: #c4a35a;
+  --gold-light: #d4b86a;
+  --ink-wash: rgba(26, 26, 46, 0.06);
+  --ink-grey: #6b6b6b;
+  --ink-light: #9a9a9a;
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Noto Serif SC', serif;
+  background-color: var(--paper);
+  color: var(--ink-text);
+  line-height: 1.9;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Paper texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.1 0 0 0 0 0.15 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+
+/* ====== Typography ====== */
+.font-display { font-family: 'Long Cang', cursive; }
+.font-heading { font-family: 'ZCOOL XiaoWei', serif; }
+.font-body { font-family: 'Noto Serif SC', serif; }
+.font-brush { font-family: 'Ma Shan Zheng', cursive; }
+
+/* ====== Ink Wash Background ====== */
+.ink-bg {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ink-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+/* ====== Hero Section ====== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 40%, var(--paper-dark) 100%);
+}
+
+.hero-mountains {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50vh;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-mountains svg {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 2rem;
+  animation: ink-spread-in 2s ease-out;
+}
+
+.hero-title {
+  font-family: 'Long Cang', cursive;
+  font-size: clamp(3rem, 8vw, 7rem);
+  color: var(--ink-black);
+  letter-spacing: 0.15em;
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: var(--ink-grey);
+  letter-spacing: 0.3em;
+  margin-bottom: 2rem;
+}
+
+.hero-date {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1rem;
+  color: var(--vermillion);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+}
+
+.hero-seal {
+  position: absolute;
+  top: 15%;
+  right: 10%;
+  width: 80px;
+  height: 80px;
+  z-index: 4;
+  animation: seal-stamp 1.5s ease-out 0.8s both;
+  transform-origin: center;
+}
+
+.hero-seal svg { width: 100%; height: 100%; }
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  font-family: 'ZCOOL XiaoWei', serif;
+  color: var(--ink-grey);
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.hero-scroll-hint::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 30px;
+  background: var(--ink-grey);
+  margin: 0.5rem auto 0;
+}
+
+/* ====== Ink wash decorative blobs ====== */
+.ink-blob-1 { width: 400px; height: 400px; background: var(--ink-black); top: -100px; left: -100px; }
+.ink-blob-2 { width: 300px; height: 300px; background: var(--vermillion); top: 30%; right: -50px; }
+.ink-blob-3 { width: 500px; height: 500px; background: var(--jade); bottom: -200px; left: 20%; }
+
+/* ====== Section Common ====== */
+.section {
+  position: relative;
+  padding: 5rem 2rem;
+  z-index: 2;
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.section-title {
+  font-family: 'Long Cang', cursive;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--ink-black);
+  text-align: center;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.section-title-en {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 0.9rem;
+  color: var(--ink-light);
+  text-align: center;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+/* ====== Brush Stroke Separator ====== */
+.brush-separator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3rem 0;
+  position: relative;
+}
+
+.brush-separator svg {
+  width: 200px;
+  height: 30px;
+}
+
+.brush-separator::before,
+.brush-separator::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ink-light), transparent);
+  max-width: 200px;
+}
+
+/* ====== Summary Table ====== */
+.summary-section {
+  background: linear-gradient(180deg, var(--paper-dark) 0%, var(--paper) 100%);
+}
+
+.summary-table-wrap {
+  overflow-x: auto;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  background: var(--paper-card);
+  border: 1px solid var(--paper-dark);
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 0.9rem;
+  min-width: 800px;
+}
+
+.summary-table thead {
+  background: var(--ink-black);
+  color: var(--paper);
+}
+
+.summary-table th {
+  padding: 1rem 1.2rem;
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  border-bottom: 2px solid var(--vermillion);
+}
+
+.summary-table td {
+  padding: 0.8rem 1.2rem;
+  text-align: center;
+  border-bottom: 1px solid var(--paper-dark);
+  color: var(--ink-text);
+}
+
+.summary-table tbody tr:hover {
+  background: var(--paper-warm);
+  transition: background 0.3s;
+}
+
+.summary-table tbody tr:nth-child(even) {
+  background: rgba(0,0,0,0.02);
+}
+
+.summary-table .spot-name {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 1rem;
+  color: var(--ink-black);
+}
+
+.summary-table .free-tag {
+  color: var(--vermillion);
+  font-weight: 600;
+}
+
+/* ====== Scenic Spot Cards ====== */
+.spot-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 5rem;
+  align-items: center;
+}
+
+.spot-card:nth-child(even) {
+  direction: rtl;
+}
+
+.spot-card:nth-child(even) > * {
+  direction: ltr;
+}
+
+.spot-image-wrap {
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.spot-image-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(135deg, rgba(26,26,46,0.05), transparent);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.spot-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease, filter 0.6s ease;
+}
+
+.spot-image-wrap:hover img {
+  transform: scale(1.05);
+  filter: contrast(1.05) saturate(1.1);
+}
+
+.spot-image-seal {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 50px;
+  height: 50px;
+  z-index: 3;
+  opacity: 0.9;
+}
+
+.spot-info h3 {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--ink-black);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.spot-number {
+  font-family: 'Long Cang', cursive;
+  font-size: 3rem;
+  color: var(--vermillion);
+  opacity: 0.3;
+  position: absolute;
+  top: -1.5rem;
+  left: -0.5rem;
+  line-height: 1;
+}
+
+.spot-info {
+  position: relative;
+}
+
+.spot-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.spot-info-table th {
+  text-align: right;
+  padding: 0.5rem 1rem;
+  width: 100px;
+  font-family: 'ZCOOL XiaoWei', serif;
+  color: var(--vermillion-deep);
+  font-weight: 400;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.spot-info-table td {
+  padding: 0.5rem 1rem;
+  color: var(--ink-text);
+  line-height: 1.8;
+}
+
+.spot-info-table tr {
+  border-bottom: 1px solid var(--paper-dark);
+}
+
+.spot-tips {
+  background: var(--paper-card);
+  border-left: 3px solid var(--vermillion);
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+  border-radius: 0 4px 4px 0;
+}
+
+.spot-tips h4 {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 1rem;
+  color: var(--vermillion);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+.spot-tips ul {
+  list-style: none;
+  padding: 0;
+}
+
+.spot-tips li {
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--ink-grey);
+  padding-left: 1.2rem;
+  position: relative;
+  margin-bottom: 0.3rem;
+}
+
+.spot-tips li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--vermillion);
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.spot-tag {
+  display: inline-block;
+  background: var(--vermillion);
+  color: var(--paper);
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 0.75rem;
+  padding: 2px 10px;
+  border-radius: 2px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.spot-tag.optional {
+  background: var(--jade);
+}
+
+/* ====== Food Stories ====== */
+.food-section {
+  background: linear-gradient(180deg, var(--paper) 0%, var(--paper-warm) 50%, var(--paper) 100%);
+  position: relative;
+}
+
+.food-intro {
+  text-align: center;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.1rem;
+  color: var(--ink-grey);
+  max-width: 700px;
+  margin: 0 auto 4rem;
+  line-height: 2;
+  font-style: italic;
+}
+
+.food-card {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 3rem;
+  margin-bottom: 5rem;
+  align-items: start;
+}
+
+.food-card:nth-child(even) {
+  grid-template-columns: 1fr 300px;
+}
+
+.food-card:nth-child(even) .food-image {
+  order: 2;
+}
+
+.food-card:nth-child(even) .food-text {
+  order: 1;
+}
+
+.food-image {
+  position: relative;
+}
+
+.food-image img {
+  width: 100%;
+  border-radius: 2px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  display: block;
+}
+
+.food-image:hover img {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+
+.food-image::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  right: -8px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--ink-light);
+  border-radius: 2px;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+.food-text h3 {
+  font-family: 'Long Cang', cursive;
+  font-size: 2.5rem;
+  color: var(--ink-black);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+.food-text h3 .food-num {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 1rem;
+  color: var(--vermillion);
+  vertical-align: super;
+  margin-right: 0.5rem;
+}
+
+.food-text .food-subtitle {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 0.95rem;
+  color: var(--ink-light);
+  letter-spacing: 0.2em;
+  margin-bottom: 1.5rem;
+}
+
+.food-text p {
+  font-size: 0.95rem;
+  line-height: 2.1;
+  color: var(--ink-text);
+  text-align: justify;
+  margin-bottom: 1rem;
+  text-indent: 2em;
+}
+
+.food-text p:first-of-type {
+  text-indent: 0;
+}
+
+.food-text p:first-of-type::first-letter {
+  font-family: 'Long Cang', cursive;
+  font-size: 3.5rem;
+  float: left;
+  line-height: 0.8;
+  margin: 0.2rem 0.5rem 0 0;
+  color: var(--vermillion);
+  text-shadow: 1px 1px 2px rgba(193,39,45,0.2);
+}
+
+/* ====== Footer ====== */
+.footer {
+  background: var(--ink-black);
+  color: var(--paper);
+  padding: 3rem 2rem;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.footer-text {
+  font-family: 'Long Cang', cursive;
+  font-size: 1.5rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.footer-sub {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 0.85rem;
+  color: var(--ink-light);
+  letter-spacing: 0.3em;
+}
+
+/* ====== Animations ====== */
+@keyframes ink-spread-in {
+  0% { transform: scale(0.8); opacity: 0; filter: blur(20px); }
+  60% { opacity: 1; filter: blur(0); }
+  100% { transform: scale(1); opacity: 1; filter: blur(0); }
+}
+
+@keyframes seal-stamp {
+  0% { transform: scale(3) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(0.9) rotate(5deg); opacity: 0.8; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(10px); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Scroll-triggered animation classes */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.15s; }
+.reveal-delay-2 { transition-delay: 0.3s; }
+.reveal-delay-3 { transition-delay: 0.45s; }
+
+/* ====== Navigation ====== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(245, 240, 225, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--paper-dark);
+  padding: 0.8rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+}
+
+.nav.visible { transform: translateY(0); }
+
+.nav-title {
+  font-family: 'Long Cang', cursive;
+  font-size: 1.5rem;
+  color: var(--ink-black);
+  letter-spacing: 0.1em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 0.9rem;
+  color: var(--ink-grey);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-links a:hover { color: var(--vermillion); }
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--vermillion);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after { width: 100%; }
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+  .spot-card, .spot-card:nth-child(even) {
+    grid-template-columns: 1fr;
+    direction: ltr;
+    gap: 1.5rem;
+  }
+  
+  .food-card, .food-card:nth-child(even) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .food-card:nth-child(even) .food-image { order: 0; }
+  .food-card:nth-child(even) .food-text { order: 0; }
+  
+  .food-image img { max-height: 250px; object-fit: cover; }
+  
+  .section { padding: 3rem 1rem; }
+  
+  .nav-links { display: none; }
+  
+  .hero-seal { width: 50px; height: 50px; top: 5%; right: 5%; }
+  
+  .spot-tips li { font-size: 0.8rem; }
+}
+
+/* ====== Decorative Elements ====== */
+.cloud-pattern {
+  position: absolute;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.meander-border {
+  height: 20px;
+  width: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='20' viewBox='0 0 40 20'%3E%3Cpath d='M0 10 L10 10 L10 5 L20 5 L20 15 L30 15 L30 10 L40 10' stroke='%231a1a2e' fill='none' stroke-width='1' opacity='0.15'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  margin: 2rem 0;
+}
+
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--vermillion), var(--gold));
+  z-index: 200;
+  width: 0%;
+  transition: width 0.1s ease;
+}
+
+/* Optional badge */
+.optional-badge {
+  display: inline-block;
+  font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 0.7rem;
+  background: transparent;
+  color: var(--jade);
+  border: 1px solid var(--jade);
+  padding: 1px 8px;
+  border-radius: 2px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+
+<!-- Scroll progress bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-title">北京游览攻略</div>
+  <ul class="nav-links">
+    <li><a href="#summary">汇总</a></li>
+    <li><a href="#spots">景点</a></li>
+    <li><a href="#food">美食</a></li>
+  </ul>
+</nav>
+
+<!-- ====== Hero Section ====== -->
+<section class="hero" id="hero">
+  <div class="ink-blob ink-blob-1"></div>
+  <div class="ink-blob ink-blob-2"></div>
+  <div class="ink-blob ink-blob-3"></div>
+  
+  <!-- Mountain silhouette -->
+  <div class="hero-mountains">
+    <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMax slice">
+      <path d="M0,400 L0,250 Q100,180 200,220 T400,200 Q500,150 600,190 T800,170 Q900,130 1000,200 T1200,180 L1200,400 Z" fill="rgba(26,26,46,0.08)"/>
+      <path d="M0,400 L0,300 Q150,250 300,280 T500,260 Q600,220 700,250 T900,230 Q1000,200 1100,250 T1200,240 L1200,400 Z" fill="rgba(26,26,46,0.12)"/>
+      <path d="M0,400 L0,340 Q200,310 400,330 T700,320 Q850,300 1000,320 T1200,310 L1200,400 Z" fill="rgba(26,26,46,0.18)"/>
+    </svg>
+  </div>
+  
+  <!-- Red seal -->
+  <div class="hero-seal">
+    <svg viewBox="0 0 100 100">
+      <rect x="5" y="5" width="90" height="90" rx="4" fill="var(--vermillion)" opacity="0.9"/>
+      <rect x="10" y="10" width="80" height="80" rx="2" fill="none" stroke="var(--paper)" stroke-width="2"/>
+      <text x="50" y="35" text-anchor="middle" font-family="ZCOOL XiaoWei, serif" font-size="18" fill="var(--paper)">京</text>
+      <text x="50" y="58" text-anchor="middle" font-family="ZCOOL XiaoWei, serif" font-size="18" fill="var(--paper)">游</text>
+      <text x="50" y="81" text-anchor="middle" font-family="ZCOOL XiaoWei, serif" font-size="14" fill="var(--paper)">记</text>
+    </svg>
+  </div>
+  
+  <div class="hero-content">
+    <h1 class="hero-title">北京景点游览攻略</h1>
+    <p class="hero-subtitle">天安门广场及周边景点游览计划</p>
+    <p class="hero-date">乙巳年 · 九月一日</p>
+  </div>
+  
+  <div class="hero-scroll-hint">向下浏览</div>
+</section>
+
+<!-- ====== Summary Table Section ====== -->
+<section class="section summary-section" id="summary">
+  <div class="meander-border"></div>
+  <div class="section-inner">
+    <h2 class="section-title reveal">游览信息汇总</h2>
+    <p class="section-title-en reveal reveal-delay-1">SUMMARY</p>
+    
+    <div class="summary-table-wrap reveal reveal-delay-2">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>景点</th>
+            <th>70周岁门票</th>
+            <th>绿色通道</th>
+            <th>预计时长</th>
+            <th>预约方式</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="spot-name">天安门升旗</td><td class="free-tag">免费</td><td>非官方提及</td><td>2-3小时</td><td>"天安门广场预约参览"小程序</td></tr>
+          <tr><td class="spot-name">人民大会堂</td><td class="free-tag">免费</td><td>无明确通道</td><td>1-2小时</td><td>"人民大会堂参览预约"小程序</td></tr>
+          <tr><td class="spot-name">国家博物馆</td><td class="free-tag">免费</td><td>北门绿色通道</td><td>2-3小时</td><td>国博官网/小程序，提前7天</td></tr>
+          <tr><td class="spot-name">故宫</td><td>半价(60岁+)</td><td>爱心通道</td><td>3-6小时</td><td>"故宫博物院"小程序，提前20天</td></tr>
+          <tr><td class="spot-name">中央礼品中心</td><td class="free-tag">免费</td><td>60岁+现场预约</td><td>2-3小时</td><td>公众号实名预约</td></tr>
+          <tr><td class="spot-name">国家大剧院</td><td>半价</td><td>无障碍设施</td><td>2-3小时</td><td>官方平台购票</td></tr>
+          <tr><td class="spot-name">鸟巢</td><td class="free-tag">免票</td><td>无障碍通道</td><td>1-2小时</td><td>小程序/现场购票</td></tr>
+          <tr><td class="spot-name">水立方</td><td class="free-tag">免费(65岁+)</td><td>证件核验</td><td>约1小时</td><td>"水立方"公众号购票</td></tr>
+          <tr><td class="spot-name">奥森公园</td><td class="free-tag">免费</td><td>无需</td><td>半天至全天</td><td>无需预约</td></tr>
+          <tr><td class="spot-name">天坛</td><td class="free-tag">免费(60岁+)</td><td>全园无台阶</td><td>2-3小时</td><td>"天坛"/"畅游公园"公众号，提前7天</td></tr>
+          <tr><td class="spot-name">什刹海</td><td class="free-tag">免费</td><td>无需</td><td>2-3小时</td><td>无需预约</td></tr>
+          <tr><td class="spot-name">圆明园</td><td class="free-tag">免费(65岁+)</td><td>爱心休息区/轮椅</td><td>3小时</td><td>"圆明园遗址公园"公众号</td></tr>
+          <tr><td class="spot-name">颐和园</td><td class="free-tag">免费(60岁+)</td><td>无障碍游线/轮椅</td><td>3小时</td><td>"颐和园"公众号，提前7天</td></tr>
+          <tr><td class="spot-name">雍和宫</td><td>半价(60岁+)</td><td>人工窗口</td><td>1-2小时</td><td>现场购票/公众号</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="meander-border"></div>
+</section>
+
+<!-- ====== Scenic Spots Section ====== -->
+<section class="section" id="spots">
+  <div class="section-inner">
+    <h2 class="section-title reveal">游览安排</h2>
+    <p class="section-title-en reveal reveal-delay-1">SCENIC SPOTS</p>
+    
+    <!-- 1. 天安门升旗 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/天安门升旗.png" alt="天安门升旗" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="12" fill="#f5f0e1">壹</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">壹</span>
+        <h3>天安门广场升旗仪式</h3>
+        <table class="spot-info-table">
+          <tr><th>游览日期</th><td>2026年9月1日（8月31日半夜排队）</td></tr>
+          <tr><th>升旗时间</th><td>约05:42:09（9月1日有军乐团现场演奏）</td></tr>
+          <tr><th>门票价格</th><td>免费，但须提前预约</td></tr>
+          <tr><th>预计时长</th><td>升旗仪式约10分钟；含排队、拍照建议预留2-3小时</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式：微信搜索"天安门广场预约参览"小程序，提前1-9天预约，不可当天预约。每日分时段，须选【升旗】时段。</li>
+            <li>预约单最多可预约7人，其中最多4名成年人。</li>
+            <li>未预约不能进入天安门广场，现场不补预约。1个月内爽约3次及以上，半年内不支持再预约。</li>
+            <li>安检非常严格，建议只带身份证和手机，否则安检环节会耽误时间。</li>
+            <li>推荐安检路线：前门西侧路线排队人数最少、用时最少，安检出口即是公厕。</li>
+            <li>通过安检后直行，左拐进地下通道，直行后右拐过马路，到天安门广场正对面。</li>
+            <li>不要接路边有人递国旗（有人专门赚游客钱）；不要坐摩的。</li>
+            <li>凌晨三四点排队抢前排对老人身体负担过重，建议保证睡眠，选择舒适站位。</li>
+            <li>60岁以上老人属于需预约人群，部分攻略提到"60岁以上凭身份证走快速通道"，建议以现场指引为准。建议1名家属陪同。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 2. 人民大会堂 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/人民大会堂（外景）.png" alt="人民大会堂" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="12" fill="#f5f0e1">贰</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">贰</span>
+        <h3>人民大会堂</h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市东城区天安门广场西侧</td></tr>
+          <tr><th>开放时间</th><td>9:00-15:00，14:30停止检票</td></tr>
+          <tr><th>门票价格</th><td>成人票30元；学生票15元；60周岁（含）以上中国公民免费</td></tr>
+          <tr><th>预计时长</th><td>建议预留1-2小时（含排队安检、检票和通行时间）</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式：微信小程序"人民大会堂参览预约"，提前1-3天预约，每日17:00放票。不设现场售票。</li>
+            <li>必须携带预约的身份证原件，电子证件可能不好使。</li>
+            <li>禁止携带液体、食品、充电宝、火种等存在安全隐患的物品。</li>
+            <li>60岁以上老人可享受免票，但仍需按规定提前网上预约。建议1名家属陪同。</li>
+            <li>咨询电话：010-83084776，工作时间9:00-15:00。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 3. 国家博物馆 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/国家博物馆（外景）.png" alt="国家博物馆" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="12" fill="#f5f0e1">叁</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">叁</span>
+        <h3>国家博物馆</h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市东城区东长安街16号（天安门广场东侧）</td></tr>
+          <tr><th>开放时间</th><td>每日9:00-17:00，16:00停止入馆；周一闭馆（法定节假日除外）。6月1日至10月31日延长至17:30</td></tr>
+          <tr><th>门票价格</th><td>免费参览，须实名预约</td></tr>
+          <tr><th>预计时长</th><td>建议预留2-3小时；深度游览建议3小时以上</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式：国家博物馆官网、官方预约小程序、微信小程序和公众号预约。提前7日内预约，每日17:00放票。</li>
+            <li>每日分为9:00-11:00、11:00-13:30、13:30-16:00三个预约入馆时段。</li>
+            <li>每个账号每周最多预约1次，每次最多预约5人。同一证件号每月最多预约4次。</li>
+            <li>60周岁以上老人走北门绿色通道核验入馆。设有无障碍电梯、休息座椅、饮水处。</li>
+            <li>必看展品推荐：古代中国基本陈列展（地下一层）、复兴之路展、后母戊鼎、四羊方尊等。</li>
+            <li>咨询电话：010-65116400。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 4. 故宫 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/故宫照片（电影感）.png" alt="故宫" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="12" fill="#f5f0e1">肆</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">肆</span>
+        <h3>故宫</h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市东城区景山前街4号（天安门广场北侧）</td></tr>
+          <tr><th>开放时间</th><td>旺季（4月1日-10月31日）8:30-17:00（16:00停止入馆）；淡季（11月1日-3月31日）8:30-16:30。周一闭馆</td></tr>
+          <tr><th>门票价格</th><td>旺季60元/人；淡季40元/人。珍宝馆、钟表馆各10元。60周岁以上半价；18周岁以下免费</td></tr>
+          <tr><th>预计时长</th><td>半日游3-4小时；深度游览6小时以上</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式："故宫博物院"微信小程序实名预约。最早可于参览7日前20:00开始预订。现场不售票。</li>
+            <li>入院仅限南面午门，参览结束后从神武门或东华门离院。</li>
+            <li>60周岁以上可从爱心通道检票通行，无需排队。建议1名家属陪同一起从爱心通道入宫。</li>
+            <li>携带大件行李需先去端门广场西侧观众服务中心存放。</li>
+            <li>必看：午门、太和殿、中和殿、保和殿、乾清宫、坤宁宫、御花园、珍宝馆、钟表馆。</li>
+            <li>建议路线：午门→太和门→三大殿→乾清门→后宫→御花园→神武门出。</li>
+            <li>服务热线：400-950-1925。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 5. 中央礼品文物管理中心 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/中央礼品文物管理中心.png" alt="中央礼品文物管理中心" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="12" fill="#f5f0e1">伍</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">伍</span>
+        <h3>中央礼品文物管理中心 <span class="optional-badge">可选</span></h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市东城区西兴隆街1号（近地铁2/5号线崇文门站H口）</td></tr>
+          <tr><th>开放时间</th><td>周二至周日 9:00-17:00（16:00停止入场），周一闭馆</td></tr>
+          <tr><th>门票价格</th><td>免费</td></tr>
+          <tr><th>预计时长</th><td>2-3小时</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式：微信公众号"中央礼品文物管理中心"实名预约。需提前1至7天预约，不接受现场预约。</li>
+            <li>60周岁及以上老年人可凭优待证件和有效身份证件原件现场预约。</li>
+            <li>高龄老人、行动不便者需由成年人陪护。建议1名家属陪同。</li>
+            <li>预约资格1次有效，出场馆后不能再次进入。</li>
+            <li>禁止携带规格超过长51CM、宽30CM、高76.5CM的大型行李。</li>
+            <li>请勿使用各类电动轮椅、老年代步车、滑板车、平衡车等。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 6. 国家大剧院 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/国家大剧院.png" alt="国家大剧院" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="12" fill="#f5f0e1">陆</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">陆</span>
+        <h3>国家大剧院 <span class="optional-badge">可选</span></h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市西城区西长安街2号（天安门广场西侧）</td></tr>
+          <tr><th>开放时间</th><td>周二至周日及国家法定节假日 9:00-17:00；周一闭馆</td></tr>
+          <tr><th>门票价格</th><td>参览票40元/人；60-69周岁半价20元；70周岁及以上免票</td></tr>
+          <tr><th>预计时长</th><td>2-3小时</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式：通过国家大剧院官方平台购票/预约。每个证件在每个入院日限购一张门票。</li>
+            <li>70周岁及以上老年人凭有效证件免票。60-69周岁享受半价优惠。</li>
+            <li>官方无障碍设施包括专门的安检通道及人工安检、残疾人专用卫生间、直梯等。</li>
+            <li>参览时可携带相机入场（请勿携带三脚架）。体积大的包需在北门处衣帽间存包。</li>
+            <li>不能携带食物和饮料进入剧院。北水下廊道有免费讲解服务和常设免费饮水处。</li>
+            <li>建议1名家属陪同老人前往。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 7. 鸟巢、水立方 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/鸟巢.png" alt="鸟巢" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="12" fill="#f5f0e1">柒</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">柒</span>
+        <h3>鸟巢、水立方等奥林匹克公园 <span class="optional-badge">可选</span></h3>
+        <table class="spot-info-table">
+          <tr><th>鸟巢地址</th><td>北京市朝阳区国家体育场南路1号</td></tr>
+          <tr><th>鸟巢时间</th><td>10:00-22:00（21:00停止检票）</td></tr>
+          <tr><th>鸟巢门票</th><td>成人票50元；70周岁以上免票；60-69周岁25元（半价）</td></tr>
+          <tr><th>水立方门票</th><td>全价票30元；60-64周岁半价15元；65周岁及以上免费</td></tr>
+          <tr><th>奥森公园</th><td>免费，无需预约。旺季6:00-20:00；淡季7:00-19:00</td></tr>
+          <tr><th>预计时长</th><td>鸟巢约1-2小时；水立方约1小时；奥森半天至全天</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>鸟巢：70周岁以上老人免票。提供无障碍专用通道、无障碍坐席及辅助设施，安排专人全程引导帮扶。</li>
+            <li>鸟巢购票：官方购票小程序或现场售票（鸟巢南DE口外、北KL口外及西入口）。服务热线：400-600-2008。</li>
+            <li>水立方：65周岁及以上老人免费。购票关注"水立方"公众号。全国统一服务热线：4006202022。</li>
+            <li>奥森公园：免费开放，60岁以上老人凭身份证可直接入园，无需额外门票或预约。</li>
+            <li>公园面积较大，建议根据老人体力选择部分区域游览，不必走完全程。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 8. 天坛 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/天坛.png" alt="天坛" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="12" fill="#f5f0e1">捌</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">捌</span>
+        <h3>天坛公园 <span class="optional-badge">可选</span></h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市东城区天坛内东里7号</td></tr>
+          <tr><th>开放时间</th><td>公园：旺季6:00-22:00；淡季6:30-22:00。核心景点：旺季8:00-17:30；淡季8:00-17:00。周一核心景点关闭</td></tr>
+          <tr><th>门票价格</th><td>旺季大门票15元，联票34元；淡季大门票10元，联票28元。60周岁及以上免费（含核心景点）</td></tr>
+          <tr><th>预计时长</th><td>含核心景点2-3小时；仅公园散步1-2小时</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式："天坛"微信公众号、"畅游公园"公众号、天坛公园官网、京通小程序。免费人群也必须预约。</li>
+            <li>提前7天可预约，每日0:00放票。旺季周末及节假日联票抢手，建议工作日前往。</li>
+            <li>60周岁及以上老人凭身份证免费入园，核心景点全部免费。全园无台阶，对老年人非常友好。</li>
+            <li>推荐东门入园，直达祈年殿核心景区，游览路线最短。</li>
+            <li>必看景点：祈年殿、回音壁、圜丘、丹陛桥、皇穹宇、神乐署等。</li>
+            <li>建议路线：东门→祈年殿→丹陛桥→皇穹宇（回音壁）→圜丘→南门出（或原路返东门出）。</li>
+            <li>公园内有电瓶车，20元/人，可代步往返核心景点，老人体力不支可考虑乘坐。</li>
+            <li>清晨可看到本地老人晨练、打太极，氛围安逸舒缓，适合慢游。</li>
+            <li>咨询电话：010-67028866。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 9. 什刹海 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/什刹海.png" alt="什刹海" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="12" fill="#f5f0e1">玖</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">玖</span>
+        <h3>什刹海 <span class="optional-badge">可选</span></h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市西城区（东起地安门外大街，南至新街口北大街，西至新街口豁口，北至钟鼓楼）</td></tr>
+          <tr><th>开放时间</th><td>全天开放（全年无休）</td></tr>
+          <tr><th>门票价格</th><td>免费，无需预约。内部部分景点（如恭王府40元、钟鼓楼等）需单独购票</td></tr>
+          <tr><th>预计时长</th><td>2-3小时</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>什刹海是北京城内面积最大、风貌保存最完整的历史街区，包括前海、后海和西海三个水域。</li>
+            <li>景区免费开放，无需预约。内部恭王府、钟鼓楼等需单独购票，可提前查询各景点官方信息。</li>
+            <li>环湖步道平坦，适合老人散步。可乘游船赏景（4人船约120元/小时）。</li>
+            <li>周边名人故居众多（如宋庆龄故居、郭沫若纪念馆等），王府古刹散落其间。</li>
+            <li>后海酒吧街是京城夜生活老牌胜地，白天游览更安静宜人。</li>
+            <li>交通：地铁8号线"什刹海"站。官方电话：010-84038677。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 10. 圆明园 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/圆明园.png" alt="圆明园" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="30" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="10" fill="#f5f0e1">拾</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">拾</span>
+        <h3>圆明园遗址公园 <span class="optional-badge">可选</span></h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市海淀区清华西路28号</td></tr>
+          <tr><th>开放时间</th><td>旺季（4月1日-10月31日）6:00-21:00（19:00停止售票/入场）；淡季（11月1日-3月31日）7:00-19:30（17:30停止售票/入场）</td></tr>
+          <tr><th>门票价格</th><td>大门门票10元；西洋楼遗址景区15元；盛时全景模型展10元；联票25元。60-64周岁半价；65周岁及以上免费（含大门门票）</td></tr>
+          <tr><th>预计时长</th><td>约3小时</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式：微信公众号"圆明园遗址公园"实名预约购票。也可现场购票。</li>
+            <li>65周岁及以上老年人免费入园（含大门门票）。60-64周岁享受半价优惠。</li>
+            <li>园内设有爱心休息区、无障碍卫生间、免费轮椅租借点，腿脚不便的老人可登记借用轮椅。</li>
+            <li>人工窗口长期保留老年专属通道，不会强制老人使用手机线上操作。</li>
+            <li>圆明园面积较大，建议乘坐园内观光车代步（另收费），减少步行负担。</li>
+            <li>必看景点：大水法遗址、西洋楼残柱、海晏堂、福海等。遗址区步行路程较长，建议根据体力选择路线。</li>
+            <li>官方电话：010-62543673。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 11. 颐和园 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/颐和园.png" alt="颐和园" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="28" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="9" fill="#f5f0e1">拾壹</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">拾壹</span>
+        <h3>颐和园 <span class="optional-badge">可选</span></h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市海淀区新建宫门路19号</td></tr>
+          <tr><th>开放时间</th><td>旺季（4月1日-10月31日）6:00-20:00（18:00停止入园）；淡季（11月1日-3月31日）6:30-19:00（18:00停止入园）。园中园（佛香阁等）：旺季8:00-18:00；淡季8:30-17:00（周一闭园）</td></tr>
+          <tr><th>门票价格</th><td>旺季大门票30元，联票60元；淡季大门票20元，联票50元。60周岁及以上免费（含大门票）；园中园需另购票</td></tr>
+          <tr><th>预计时长</th><td>约3小时</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式："颐和园"官方微信公众号或小程序实名预约，提前7天，每日21:00放票。入园须刷身份证。</li>
+            <li>60周岁及以上老人凭身份证免费入园（含大门票）。不限户籍，凭身份证当日出生日期满60即可。</li>
+            <li>无障碍设施：6个门区（东宫门、新建宫门、南如意门、西门、北宫门、北如意门）提供免费轮椅租借（押金500元）。环昆明湖无障碍游线已建成，无障碍坡道30余处。</li>
+            <li>推荐北宫门进园，无障碍电梯直达山脚最省力。园区观光车环线覆盖全部核心景点。</li>
+            <li>长廊全程平坦，适合老人散步。不建议爬万寿山台阶上山，山脚长廊观景效果已极佳。</li>
+            <li>昆明湖游船：大船比小船更稳，适合腿脚不便的老人，推荐乘坐大船。</li>
+            <li>建议路线：北宫门→苏州街→万寿山脚（不登山）→长廊→昆明湖乘船→石舫→东宫门出。</li>
+            <li>官方电话：010-62881144、010-62860608。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 12. 雍和宫 -->
+    <div class="spot-card reveal">
+      <div class="spot-image-wrap">
+        <img src="景点图片/雍和宫.png" alt="雍和宫" loading="lazy">
+        <div class="spot-image-seal">
+          <svg viewBox="0 0 50 50"><rect x="2" y="2" width="46" height="46" rx="3" fill="rgba(193,39,45,0.85)"/><text x="25" y="28" text-anchor="middle" font-family="ZCOOL XiaoWei" font-size="9" fill="#f5f0e1">拾贰</text></svg>
+        </div>
+      </div>
+      <div class="spot-info">
+        <span class="spot-number">拾贰</span>
+        <h3>雍和宫 <span class="optional-badge">可选</span></h3>
+        <table class="spot-info-table">
+          <tr><th>地址</th><td>北京市东城区雍和宫大街28号</td></tr>
+          <tr><th>开放时间</th><td>冬春季（11月1日-3月31日）9:00-16:30（16:00停止入场）；夏秋季（4月1日-10月31日）8:30-16:30（16:00停止入场）</td></tr>
+          <tr><th>门票价格</th><td>25元/人；60周岁及以上半价12元/人。6周岁以下或1.2米以下儿童、军人、残疾人等免费</td></tr>
+          <tr><th>预计时长</th><td>1-2小时</td></tr>
+        </table>
+        <div class="spot-tips">
+          <h4>温馨提示</h4>
+          <ul>
+            <li>预约方式：不需要预约，可线上购票也可线下现场购票。"雍和宫游客信众服务"微信公众号可提前7天购买。</li>
+            <li>60周岁及以上老人凭老年证或身份证享半价优惠（12元/人）。现场人工窗口可办理老年票，不会强制使用手机操作。</li>
+            <li>雍和宫为藏传佛教格鲁派寺院，是雍正帝登基前的府邸、乾隆帝出生地，香火极盛。</li>
+            <li>建议清晨前往，人流较少，空气质量佳。寺院内殿宇多需步行，但路线不长，老人可慢行参观。</li>
+            <li>必看：万福阁（内含18米高白檀木弥勒大佛）、法轮殿、雍和宫殿等。</li>
+            <li>交通：地铁2/5号线"雍和宫"站F口出站步行约3分钟。不推荐自驾，停车困难。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== Food Stories Section ====== -->
+<section class="section food-section" id="food">
+  <div class="meander-border"></div>
+  <div class="section-inner">
+    <h2 class="section-title reveal">北京吃食</h2>
+    <p class="section-title-en reveal reveal-delay-1">BEIJING CUISINE</p>
+    <p class="food-intro reveal reveal-delay-2">
+      一口京城味，半部烟火史。北京这地界儿，六朝古都，天子脚下。王公贵胄吃的是排场，市井百姓嚼的是日子。这一出一入之间，便生出无数吃食的故事来。今儿不荐店，不论价，单说这些吃食的前世今生，权当饭桌上多添一碟下酒的谈资。
+    </p>
+
+    <div class="brush-separator">
+      <svg viewBox="0 0 200 30"><path d="M10,15 Q50,5 100,15 T190,15" stroke="var(--ink-black)" fill="none" stroke-width="2" opacity="0.3" stroke-linecap="round"/><circle cx="100" cy="15" r="3" fill="var(--vermillion)" opacity="0.5"/></svg>
+    </div>
+
+    <!-- 1. 炙子烤肉 -->
+    <div class="food-card reveal">
+      <div class="food-image">
+        <img src="景点图片/美食_炙子烤肉.jpg" alt="炙子烤肉" loading="lazy">
+      </div>
+      <div class="food-text">
+        <h3><span class="food-num">壹</span>炙子烤肉</h3>
+        <p class="food-subtitle">铁条上的蒙古风</p>
+        <p>要说烤肉，得从蒙古人说起。当年成吉思汗的铁骑踏遍欧亚，行军打仗，没锅没灶，头盔往火上一架，肉片往上一摊，便是烤肉。这法子传到北京，让回回们拾掇出了新花样。</p>
+        <p>所谓"炙子"，是一副铁条焊成的烤盘，形如百叶窗，下面烧松枝或炭火。肉片事先用酱油、料酒、葱姜末腌过，往炙子上一摊，滋啦一声，香气便顺着烟气往上蹿。讲究的主儿，自己端着盘子站着烤，一只脚踏在板凳上，边烤边吃，这叫"武吃"。文雅的便坐着让伙计烤好端上来，这叫"文吃"。</p>
+        <p>老北京烤肉有"三大家"——烤肉宛、烤肉季、烤肉刘。烤肉宛在宣武门，打咸丰年间就支摊子了；烤肉季在什刹海，是个姓季的回回先摆的浮摊，后来发了家；烤肉刘在友谊医院边上，年头最晚，口碑不差。三家各有各的绝活，但规矩一样：肉只选牛羊上脑，片得薄如纸，迎风能飘起来。</p>
+      </div>
+    </div>
+
+    <!-- 2. 门钉肉饼 -->
+    <div class="food-card reveal">
+      <div class="food-image">
+        <img src="景点图片/美食_门钉肉饼.jpg" alt="门钉肉饼" loading="lazy">
+      </div>
+      <div class="food-text">
+        <h3><span class="food-num">贰</span>门钉肉饼</h3>
+        <p class="food-subtitle">紫禁城门上的金疙瘩</p>
+        <p>门钉肉饼这名儿，透着京城独有的那份讲究。紫禁城的门上钉着铜鎏金门钉，九路九排，九九八十一个，取的是"九五之尊"的意思。这肉饼做出来，圆鼓鼓、厚墩墩，正面还捏出一圈花边，往那儿一摆，活脱脱就是一个门钉。</p>
+        <p>传说是这么说的：慈禧太后有一回嘴馋，传膳时御膳房犯了难——山珍海味老佛爷吃腻了。有个厨子灵机一动，拿牛肉大葱做馅，包进面皮里，烙得两面金黄，端上去。太后一看，嘿，这不就是宫门上的门钉吗？一口咬下去，皮脆馅香，汤汁四溢，凤颜大悦。</p>
+        <p>这故事真假难辨，但门钉肉饼的讲究是真的。皮要半烫面，凉了不硬；馅要牛肉大葱，七分肉三分葱，多了腻少了寡。煎的时候先烙正面，锁住花边，再翻面烙底，两面金黄才出锅。趁热吃，一口下去那汁水烫嘴，但舍不得吐——这就是门钉肉饼的厉害。</p>
+      </div>
+    </div>
+
+    <!-- 3. 南门涮肉 -->
+    <div class="food-card reveal">
+      <div class="food-image">
+        <img src="景点图片/美食_南门涮肉.jpg" alt="南门涮肉" loading="lazy">
+      </div>
+      <div class="food-text">
+        <h3><span class="food-num">叁</span>南门涮肉</h3>
+        <p class="food-subtitle">铜锅里的涮法儿</p>
+        <p>北京人涮羊肉，不叫"火锅"，叫"涮锅子"。一个铜锅，中间是烟囱，底下烧炭，水开得翻花，夹一片薄如蝉翼的羊肉，在滚水里一涮——就那么三五秒——肉色一变就捞，蘸麻酱小料吃。这涮法儿，讲究的是"快"字，涮久了肉老，涮快了不熟，差一秒都不行。</p>
+        <p>铜锅也有学问。为什么非得铜的？铜导热快，水翻得急，肉片下去不降温度，出来才嫩。那烟囱不叫烟囱，叫"火筒"，烧的是硬木炭，没烟没味。要是烧了带松脂的炭，羊肉就串了味儿，老饕一吃便知。</p>
+        <p>小料是灵魂。芝麻酱打底，韭菜花提鲜，酱豆腐增醇，虾油点睛，最后撒一把香菜末。各家小料配方是命根子，传男不传女。其实说白了就是比例不同，但差一点味儿就不对，你说玄不玄？涮肉的肉也讲究，只取羊后腿和上脑，俗称"黄瓜条"的部位。手工切，片要大、薄、匀。以前有名的大师傅，一刀下去，片片透光，往墙上贴能粘住。</p>
+      </div>
+    </div>
+
+    <!-- 4. 北京烤鸭 -->
+    <div class="food-card reveal">
+      <div class="food-image">
+        <img src="景点图片/美食_北京烤鸭.jpg" alt="北京烤鸭" loading="lazy">
+      </div>
+      <div class="food-text">
+        <h3><span class="food-num">肆</span>北京烤鸭</h3>
+        <p class="food-subtitle">挂炉与焖炉的百年之争</p>
+        <p>北京烤鸭，分两派：挂炉与焖炉。挂炉派以全聚德为首。炉膛半开放，果木明火烤，鸭子挂里头，火苗舔着鸭皮，油脂一滴滴落入炉底的铁盘里，噼啪作响。老师傅拿着长杆子，隔一会儿就把鸭子换个位置，务使受热均匀。烤出来的鸭子，皮脆如玻璃，肉嫩似豆腐，片的时候得连皮带肉，薄厚均匀。全聚德从同治三年（1864年）开张至今，用的是"北京填鸭"，个头大，肉厚实。</p>
+        <p>焖炉派以便宜坊为代表。焖炉是封闭的，不直接见明火。炉壁先烧热，再把鸭子放进去，关上炉门，用炉壁的余温把鸭子"焖"熟。烤出来的鸭子皮肉之间多了一层油脂，口感更滋润。便宜坊比全聚德还老，永乐年间就在菜市口摆摊了，算下来六百多年了。</p>
+        <p>两派争了一百多年，谁也说服不了谁。挂炉的嫌焖炉的不够脆，焖炉的嫌挂炉的太干。其实各有各的好，就看你好哪一口。但有一件事是两派共同的规矩：鸭子只能烤，不能炸。你要是在北京跟人说吃"炸鸭"，人家能跟你急。片鸭子也是绝活。一整只鸭子，片一百零八片，片片带皮带肉，不多不少。片完的鸭架子别扔，熬白菜汤，撒把盐，那汤鲜得能把眉毛鲜掉。</p>
+      </div>
+    </div>
+
+    <!-- 5. 卤煮 -->
+    <div class="food-card reveal">
+      <div class="food-image">
+        <img src="景点图片/美食_卤煮.jpg" alt="卤煮" loading="lazy">
+      </div>
+      <div class="food-text">
+        <h3><span class="food-num">伍</span>卤煮</h3>
+        <p class="food-subtitle">穷人嘴里的御膳</p>
+        <p>卤煮火烧，听着俗，吃着香，是老北京南城穷苦人嘴里蹦出来的宝贝。早年间，皇宫里吃苏造肉——那是拿五花大片肉和各种香料炖出来的，香得能让人从东华门闻到西华门。可御膳的东西，老百姓哪吃得起？但御膳房的太监们有法子：把苏造肉的配方偷出来，拿老百姓吃得起的猪下水——肠子、肺头、豆腐——替了那五花肉，再加上火烧（面饼），一锅炖了。这便是卤煮的由来。</p>
+        <p>小肠陈是卤煮的头一块招牌。打清末就在南城摆摊，传到如今已是第四代。老汤是命根子，那锅老汤据说从开业那天起就没断过火，每日添水加料，百年下来，汤里的味道一层叠一层，跟城墙根的土似的，年岁越长越厚实。</p>
+        <p>吃卤煮有讲究。先看那汤色——得是酱红色，浓而不浑。火烧切成井字块，豆腐三角块，肠子切段，肺头切片，码在碗底，浇上滚汤，再搁蒜泥、韭菜花、腐乳汁。一口下去，肠子弹牙，肺头软烂，火烧吸饱了汤汁但不烂，嚼着有劲儿。冬天来一碗，热气从肚子里往上顶，能把一天的寒气全赶跑。</p>
+        <p>有人说卤煮是"下水做的，上不得台面"。北京人听了这话不乐意：你知道什么？这卤煮里头，有宫里的方子，有民间的智慧，有百年的老汤，有一代代手艺人的命。它不是上不了台面，它就是台面。</p>
+      </div>
+    </div>
+
+    <!-- 6. 豆汁 -->
+    <div class="food-card reveal">
+      <div class="food-image">
+        <img src="景点图片/美食_豆汁.jpg" alt="豆汁" loading="lazy">
+      </div>
+      <div class="food-text">
+        <h3><span class="food-num">陆</span>豆汁</h3>
+        <p class="food-subtitle">爱之如命，恨之入骨</p>
+        <p>豆汁这东西，是北京吃食里最能分出"自己人"和"外人"的试金石。绿豆泡涨，磨成浆，滤去豆渣，剩下的液体搁在那儿发酵。发到发酸发馊，表面起一层沫子，这就成了豆汁。灰绿色的，闻着一股酸腐味儿，头回见的人，十个有九个想吐。</p>
+        <p>可北京人爱它爱得要命。老北京有句话："没喝过豆汁儿，不算到过北京。"这话不假。豆汁喝进嘴里，酸、甜、馊、涩，什么味都有，但咽下去之后，回甘从嗓子眼儿往上冒，浑身通透。配一碗豆汁的，必须是焦圈和咸菜丝。焦圈炸得酥脆，豆汁滚烫，一凉一热，一脆一滑，对冲之下，那股子酸馊味竟变得妙不可言。</p>
+        <p>豆汁的来历也有意思。原本是做绿豆淀粉时的下脚料，穷人舍不得倒，搁着搁着发酵了，一尝，嘿，还别有风味。后来连宫里都喝上了。乾隆爷好这口，专门让御膳房每日备着。据说有一次乾隆召见大臣，端出豆汁来赐饮，大臣们捏着鼻子灌下去，脸上还得堆着笑说"好喝"。这画面，想想就好笑。</p>
+        <p>如今喝豆汁的地方不多了。坐的也都是老主顾，大爷大妈们端着碗，就着焦圈，一口豆汁一口咸菜，吃的是回忆，品的是岁月。你要是头一回喝，别急着吐——忍住第一口，第二口就顺了，到第三口，你可能就上瘾了。当然，也可能直接放下碗再也不碰。这就是豆汁的脾气：它不迎合任何人。</p>
+      </div>
+    </div>
+
+    <!-- 7. 爆肚 -->
+    <div class="food-card reveal">
+      <div class="food-image">
+        <img src="景点图片/美食_爆肚.jpg" alt="爆肚" loading="lazy">
+      </div>
+      <div class="food-text">
+        <h3><span class="food-num">柒</span>爆肚</h3>
+        <p class="food-subtitle">三秒定乾坤</p>
+        <p>爆肚，一个"爆"字，写尽了这道吃食的全部学问。牛百叶也好，羊肚领也罢，切好了往滚水里一汆——多久？三秒。多了老了，少了生了，就这三秒，一秒不能差。捞出来过凉水，装盘，蘸麻酱吃。就这么简单的东西，但做到极致就是绝活。</p>
+        <p>爆肚分十三个部位，各有各的名堂：肚仁、肚领、肚板、肚丝、蘑菇头、散丹……每个部位汆的时间不同，短的几秒，长的十几秒。一个老掌柜，靠一锅滚水和一双筷子，能在不同部位之间切换自如，毫厘不差。这门手艺，不是三年五年能练出来的。</p>
+        <p>蘸料也讲究。麻酱、酱油、醋、辣油、香菜、葱花，各有比例。但各家最大的不同，在于那一碟"爆肚蘸料"的秘方——据说有用虾油的，有用黄酒的，有的还搁一点点白糖提鲜。这方子，掌柜的比自家存折还看得紧。吃爆肚最高境界：端上来不蘸料，先吃一口原味。好的爆肚，本身带着一股子清甜和脆嫩，什么料都不蘸，光嚼那口脆劲儿，就是满嘴的香。蘸料是锦上添花，不是遮丑的粉。</p>
+      </div>
+    </div>
+
+    <!-- 8. 驴打滚 -->
+    <div class="food-card reveal">
+      <div class="food-image">
+        <img src="景点图片/美食_驴打滚.jpg" alt="驴打滚" loading="lazy">
+      </div>
+      <div class="food-text">
+        <h3><span class="food-num">捌</span>驴打滚</h3>
+        <p class="food-subtitle">滚出来的甜</p>
+        <p>最后说个甜的。驴打滚，学名叫豆面糕，是老北京传统小吃。黄米面蒸熟，摊开抹上红豆沙，卷起来，在炒熟的黄豆面里一滚——那黄豆面沾满了一身，像极了驴子在土里打滚扬起一溜尘烟。这名字，俗到极点，妙到极致。</p>
+        <p>还有艾窝窝，雪白的糯米团子，里头裹着芝麻、核桃、瓜子仁，顶部点一粒红点。这红点是点睛之笔，像美人眉心的花钿，小小一枚，精致得很。护国寺小吃店里，这些一口一个的小点心摆了一排。北京人管它们叫"京味儿"，其实里面装的全是光阴。</p>
+        <p>过去庙会上，大人牵着孩子，花几文钱买一包驴打滚，孩子举着边走边吃，豆面掉了一身也不在乎。那光景，如今想起来，甜的不是点心，是那会儿的日子。</p>
+        <p style="text-align: center; font-style: italic; color: var(--ink-light); margin-top: 2rem; font-size: 1rem; text-indent: 0;">——人间烟火气，最抚凡人心。</p>
+      </div>
+    </div>
+
+  </div>
+  <div class="meander-border"></div>
+</section>
+
+<!-- ====== Footer ====== -->
+<footer class="footer">
+  <p class="footer-text">人间烟火气 · 最抚凡人心</p>
+  <p class="footer-sub">北京景点游览攻略 · 乙巳年秋</p>
+</footer>
+
+<script>
+// ====== Scroll Progress Bar ======
+const scrollProgress = document.getElementById('scrollProgress');
+const nav = document.getElementById('nav');
+
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  scrollProgress.style.width = progress + '%';
+  
+  // Show nav after scrolling past hero
+  if (scrollTop > window.innerHeight * 0.8) {
+    nav.classList.add('visible');
+  } else {
+    nav.classList.remove('visible');
+  }
+});
+
+// ====== Intersection Observer for Reveal Animations ======
+const observerOptions = {
+  threshold: 0.15,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.reveal').forEach(el => {
+  observer.observe(el);
+});
+
+// ====== Smooth scroll for nav links ======
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const targetId = link.getAttribute('href');
+    const target = document.querySelector(targetId);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
